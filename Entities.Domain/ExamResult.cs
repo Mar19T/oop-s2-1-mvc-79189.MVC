@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entities.Domain
 {
-    internal class ExamResult
+    public class ExamResult
     {
+
     }
 }
