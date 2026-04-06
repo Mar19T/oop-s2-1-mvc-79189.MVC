@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oop-s2-1-mvc-79189", "oop-s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities.Domain", "Entities.Domain\Entities.Domain.csproj", "{DD3134A7-06A2-4318-AAE8-0CC5BB035CC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VgcCollege.Tests", "VgcCollege.Tests\VgcCollege.Tests.csproj", "{F687A268-2726-49AA-8D52-83ECA4E393BA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{DD3134A7-06A2-4318-AAE8-0CC5BB035CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD3134A7-06A2-4318-AAE8-0CC5BB035CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD3134A7-06A2-4318-AAE8-0CC5BB035CC1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F687A268-2726-49AA-8D52-83ECA4E393BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F687A268-2726-49AA-8D52-83ECA4E393BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F687A268-2726-49AA-8D52-83ECA4E393BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F687A268-2726-49AA-8D52-83ECA4E393BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
