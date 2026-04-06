@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 
 namespace Entities.Domain;
 
-    public class Exam
+    public class FacultyCourseAssignment
     {
         public int Id { get; set; }
+        public int FacultyProfileId { get; set; }
         public int CourseId { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public DateTime Date { get; set; }
-        public int MaxScore { get; set; }
-        public bool ResultsReleased { get; set; } = false;
 
         // Navigation
+        public FacultyProfile FacultyProfile { get; set; } = null!;
         public Course Course { get; set; } = null!;
-        public ICollection<ExamResult> Results { get; set; } = new List<ExamResult>();
     }
 
