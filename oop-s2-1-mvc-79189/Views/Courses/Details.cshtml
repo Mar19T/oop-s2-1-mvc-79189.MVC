@@ -4,37 +4,154 @@
 }
 
 <h1>@Model.Name</h1>
+<p class="text-muted">
+    @Model.Branch?.Name —
+    @Model.StartDate.ToString("dd MMM yyyy") to
+    @Model.EndDate.ToString("dd MMM yyyy")
+</p>
 <hr />
 
-<dl class="row">
-    <dt class="col-sm-3">Branch</dt>
-    <dd class="col-sm-9">@Model.Branch?.Name</dd>
-    <dt class="col-sm-3">Start Date</dt>
-    <dd class="col-sm-9">@Model.StartDate.ToString("dd MMM yyyy")</dd>
-    <dt class="col-sm-3">End Date</dt>
-    <dd class="col-sm-9">@Model.EndDate.ToString("dd MMM yyyy")</dd>
-</dl>
+<div class="row mb-4">
 
-<h4 class="mt-4">Faculty</h4>
-<ul>
-    @foreach (var fa in Model.FacultyAssignments)
-    {
-        <li>@fa.FacultyProfile?.Name</li>
-    }
-</ul>
+    <!-- Faculty -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0">Faculty</h6>
+            </div>
+            <div class="card-body">
+                @if (Model.FacultyAssignments.Any())
+                {
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var fa in Model.FacultyAssignments)
+                        {
+                            <li class="mb-2">
+                                <span class="badge bg-primary me-1">F</span>
+                                @fa.FacultyProfile?.Name
+                                <br />
+                                <small class="text-muted ms-3">@fa.FacultyProfile?.Email</small>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No faculty assigned</p>
+                }
+            </div>
+        </div>
+    </div>
 
-<h4 class="mt-4">Enrolled Students</h4>
-<ul>
-    @foreach (var enrolment in Model.Enrolments)
-    {
-        <li>
-            @enrolment.StudentProfile?.Name
-            <span class="badge @(enrolment.Status == Entities.Domain.EnrolmentStatus.Active ? "bg-success" : "bg-secondary")">
-                @enrolment.Status
-            </span>
-        </li>
-    }
-</ul>
+    <!-- Stats -->
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-success text-center">
+                    <div class="card-body">
+                        <h3>@Model.Enrolments.Count(e => e.Status == Entities.Domain.EnrolmentStatus.Active)</h3>
+                        <p class="mb-0 small">Active Students</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-warning text-center">
+                    <div class="card-body">
+                        <h3>@Model.Assignments.Count</h3>
+                        <p class="mb-0 small">Assignments</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-info text-center">
+                    <div class="card-body">
+                        <h3>@Model.Exams.Count</h3>
+                        <p class="mb-0 small">Exams</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-<a asp-action="Index" class="btn btn-secondary ms-2">Back</a>
+<!-- Students -->
+<h5 class="mt-3">Enrolled Students</h5>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Student No.</th>
+            <th>Enrol Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var enrolment in Model.Enrolments)
+        {
+            <tr>
+                <td>@enrolment.StudentProfile?.Name</td>
+                <td>@enrolment.StudentProfile?.StudentNumber</td>
+                <td>@enrolment.EnrolDate.ToString("dd MMM yyyy")</td>
+                <td>
+                    <span class="badge @(enrolment.Status == Entities.Domain.EnrolmentStatus.Active ? "bg-success" : enrolment.Status == Entities.Domain.EnrolmentStatus.Withdrawn ? "bg-danger" : "bg-secondary")">
+                        @enrolment.Status
+                    </span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Assignments -->
+<h5 class="mt-4">Assignments</h5>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Due Date</th>
+            <th>Max Score</th>
+            <th>Submissions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var assignment in Model.Assignments)
+        {
+            <tr>
+                <td>@assignment.Title</td>
+                <td>@assignment.DueDate.ToString("dd MMM yyyy")</td>
+                <td>@assignment.MaxScore</td>
+                <td>@assignment.Results.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Exams -->
+<h5 class="mt-4">Exams</h5>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Max Score</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exam in Model.Exams)
+        {
+            <tr>
+                <td>@exam.Title</td>
+                <td>@exam.Date.ToString("dd MMM yyyy")</td>
+                <td>@exam.MaxScore</td>
+                <td>
+                    <span class="badge @(exam.ResultsReleased ? "bg-success" : "bg-warning")">
+                        @(exam.ResultsReleased ? "Released" : "Provisional")
+                    </span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mt-3">Edit</a>
+<a asp-action="Index" class="btn btn-secondary ms-2 mt-3">Back</a>

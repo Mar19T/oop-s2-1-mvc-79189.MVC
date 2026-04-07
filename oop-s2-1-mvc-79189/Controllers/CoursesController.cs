@@ -30,16 +30,20 @@ namespace oop_s2_1_mvc_79189.Controllers
             return View(courses);
         }
 
+        // ✅ Updated — loads full relationship tree
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
 
             var course = await _context.Courses
                 .Include(c => c.Branch)
-                .Include(c => c.Enrolments)
-                    .ThenInclude(e => e.StudentProfile)
                 .Include(c => c.FacultyAssignments)
                     .ThenInclude(fa => fa.FacultyProfile)
+                .Include(c => c.Enrolments)
+                    .ThenInclude(e => e.StudentProfile)
+                .Include(c => c.Assignments)
+                    .ThenInclude(a => a.Results)
+                .Include(c => c.Exams)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (course == null) return NotFound();

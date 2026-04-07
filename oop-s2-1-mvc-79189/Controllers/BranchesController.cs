@@ -26,12 +26,18 @@ namespace oop_s2_1_mvc_79189.Controllers
             return View(branches);
         }
 
+        // ✅ Updated — loads full relationship tree
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
 
             var branch = await _context.Branches
                 .Include(b => b.Courses)
+                    .ThenInclude(c => c.Enrolments)
+                        .ThenInclude(e => e.StudentProfile)
+                .Include(b => b.Courses)
+                    .ThenInclude(c => c.FacultyAssignments)
+                        .ThenInclude(fa => fa.FacultyProfile)
                 .FirstOrDefaultAsync(b => b.Id == id);
 
             if (branch == null) return NotFound();
@@ -51,7 +57,6 @@ namespace oop_s2_1_mvc_79189.Controllers
             {
                 _context.Add(branch);
                 await _context.SaveChangesAsync();
-
                 _logger.LogInformation("Branch created: {Name}", branch.Name);
                 return RedirectToAction(nameof(Index));
             }
