@@ -1,0 +1,51 @@
+﻿@model Entities.Domain.StudentProfile
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<h1>@Model.Name</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Student Number</dt>
+    <dd class="col-sm-9">@Model.StudentNumber</dd>
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+    <dt class="col-sm-3">Phone</dt>
+    <dd class="col-sm-9">@Model.Phone</dd>
+    <dt class="col-sm-3">Address</dt>
+    <dd class="col-sm-9">@Model.Address</dd>
+    <dt class="col-sm-3">Date of Birth</dt>
+    <dd class="col-sm-9">@Model.DateOfBirth.ToString("dd MMM yyyy")</dd>
+</dl>
+
+<h4 class="mt-4">Enrolments</h4>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Enrol Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var enrolment in Model.Enrolments)
+        {
+            <tr>
+                <td>@enrolment.Course?.Name</td>
+                <td>@enrolment.EnrolDate.ToString("dd MMM yyyy")</td>
+                <td>
+                    <span class="badge @(enrolment.Status == Entities.Domain.EnrolmentStatus.Active ? "bg-success" : "bg-secondary")">
+                        @enrolment.Status
+                    </span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (User.IsInRole("Administrator"))
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+}
+<a asp-action="Index" class="btn btn-secondary ms-2">Back</a>

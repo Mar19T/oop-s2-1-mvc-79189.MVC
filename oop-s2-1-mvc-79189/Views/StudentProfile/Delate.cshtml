@@ -1,0 +1,17 @@
+﻿@model Entities.Domain.StudentProfile
+@{
+    ViewData["Title"] = "Delete Student";
+}
+
+<h1>Delete Student</h1>
+<hr />
+
+<div class="alert alert-danger">
+    Are you sure you want to delete <strong>@Model.Name</strong> (@Model.StudentNumber)?
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Yes, Delete" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>

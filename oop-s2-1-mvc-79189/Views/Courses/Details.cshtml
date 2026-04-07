@@ -1,0 +1,40 @@
+﻿@model Entities.Domain.Course
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<h1>@Model.Name</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Branch</dt>
+    <dd class="col-sm-9">@Model.Branch?.Name</dd>
+    <dt class="col-sm-3">Start Date</dt>
+    <dd class="col-sm-9">@Model.StartDate.ToString("dd MMM yyyy")</dd>
+    <dt class="col-sm-3">End Date</dt>
+    <dd class="col-sm-9">@Model.EndDate.ToString("dd MMM yyyy")</dd>
+</dl>
+
+<h4 class="mt-4">Faculty</h4>
+<ul>
+    @foreach (var fa in Model.FacultyAssignments)
+    {
+        <li>@fa.FacultyProfile?.Name</li>
+    }
+</ul>
+
+<h4 class="mt-4">Enrolled Students</h4>
+<ul>
+    @foreach (var enrolment in Model.Enrolments)
+    {
+        <li>
+            @enrolment.StudentProfile?.Name
+            <span class="badge @(enrolment.Status == Entities.Domain.EnrolmentStatus.Active ? "bg-success" : "bg-secondary")">
+                @enrolment.Status
+            </span>
+        </li>
+    }
+</ul>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+<a asp-action="Index" class="btn btn-secondary ms-2">Back</a>

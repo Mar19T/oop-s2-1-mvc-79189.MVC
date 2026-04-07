@@ -1,0 +1,18 @@
+﻿@model Entities.Domain.Branch
+@{
+    ViewData["Title"] = "Delete Branch";
+}
+
+<h1>Delete Branch</h1>
+<hr />
+
+<div class="alert alert-danger">
+    Are you sure you want to delete <strong>@Model.Name</strong>?
+    This will also delete all @Model.Courses.Count course(s) linked to it.
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Yes, Delete" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>
