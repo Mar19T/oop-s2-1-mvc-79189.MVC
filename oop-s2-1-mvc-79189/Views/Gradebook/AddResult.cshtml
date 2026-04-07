@@ -1,0 +1,53 @@
+﻿@model Entities.Domain.AssignmentResult
+@{
+    ViewData["Title"] = "Add Result";
+    var assignment = ViewBag.Assignment as Entities.Domain.Assignment;
+}
+
+<h1>Add Result</h1>
+<h5 class="text-muted">@assignment?.Title — Max Score: @assignment?.MaxScore</h5>
+<hr />
+
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="AddResult">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="AssignmentId" value="@assignment?.Id" />
+
+            <div class="form-group mb-3">
+                <label asp-for="StudentProfileId" class="control-label"></label>
+                <select asp-for="StudentProfileId" class="form-control"
+                        asp-items="ViewBag.StudentProfileId">
+                    <option value="">-- Select Student --</option>
+                </select>
+                <span asp-validation-for="StudentProfileId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Score" class="control-label"></label>
+                <input asp-for="Score" class="form-control" type="number"
+                       min="0" max="@assignment?.MaxScore" />
+                <small class="text-muted">Max: @assignment?.MaxScore</small>
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Feedback" class="control-label"></label>
+                <textarea asp-for="Feedback" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Feedback" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Results" asp-route-assignmentId="@assignment?.Id"
+                   class="btn btn-secondary ms-2">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Entities.Domain.AttendanceRecord>
+@{
+    ViewData["Title"] = "Attendance";
+}
+
+<h1>Attendance</h1>
+
+@if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">+ Record Attendance</a>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Week</th>
+            <th>Date</th>
+            <th>Present</th>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model)
+        {
+            <tr>
+                <td>@record.CourseEnrolment?.StudentProfile?.Name</td>
+                <td>@record.CourseEnrolment?.Course?.Name</td>
+                <td>Week @record.WeekNumber</td>
+                <td>@record.Date.ToString("dd MMM yyyy")</td>
+                <td>
+                    <span class="badge @(record.Present ? "bg-success" : "bg-danger")">
+                        @(record.Present ? "Present" : "Absent")
+                    </span>
+                </td>
+                @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@record.Id"
+                           class="btn btn-sm btn-warning">Edit</a>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a asp-action="Delete" asp-route-id="@record.Id"
+                               class="btn btn-sm btn-danger">Delete</a>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

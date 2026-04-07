@@ -1,0 +1,18 @@
+﻿@model Entities.Domain.CourseEnrolment
+@{
+    ViewData["Title"] = "Remove Enrolment";
+}
+
+<h1>Remove Enrolment</h1>
+<hr />
+
+<div class="alert alert-danger">
+    Are you sure you want to remove <strong>@Model.StudentProfile?.Name</strong>
+    from <strong>@Model.Course?.Name</strong>?
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Yes, Remove" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>

@@ -1,0 +1,19 @@
+﻿@model Entities.Domain.Exam
+@{
+    ViewData["Title"] = "Delete Exam";
+}
+
+<h1>Delete Exam</h1>
+<hr />
+
+<div class="alert alert-danger">
+    Are you sure you want to delete <strong>@Model.Title</strong>
+    from <strong>@Model.Course?.Name</strong>?
+    This will also delete all results.
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Yes, Delete" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>

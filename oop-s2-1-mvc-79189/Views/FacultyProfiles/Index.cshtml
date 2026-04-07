@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Entities.Domain.FacultyProfile>
+@{
+    ViewData["Title"] = "Faculty";
+}
+
+<h1>Faculty</h1>
+
+@if (User.IsInRole("Administrator"))
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">+ Add Faculty</a>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Courses</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var faculty in Model)
+        {
+            <tr>
+                <td>@faculty.Name</td>
+                <td>@faculty.Email</td>
+                <td>@faculty.Phone</td>
+                <td>@faculty.CourseAssignments.Count</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@faculty.Id"
+                       class="btn btn-sm btn-info">Details</a>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@faculty.Id"
+                           class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@faculty.Id"
+                           class="btn btn-sm btn-danger">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

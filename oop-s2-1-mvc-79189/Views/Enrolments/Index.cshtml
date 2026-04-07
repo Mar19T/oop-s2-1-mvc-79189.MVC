@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Entities.Domain.CourseEnrolment>
+@{
+    ViewData["Title"] = "Enrolments";
+}
+
+<h1>Enrolments</h1>
+
+@if (User.IsInRole("Administrator"))
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">+ Enrol Student</a>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Student Number</th>
+            <th>Course</th>
+            <th>Enrol Date</th>
+            <th>Status</th>
+            @if (User.IsInRole("Administrator"))
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var enrolment in Model)
+        {
+            <tr>
+                <td>@enrolment.StudentProfile?.Name</td>
+                <td>@enrolment.StudentProfile?.StudentNumber</td>
+                <td>@enrolment.Course?.Name</td>
+                <td>@enrolment.EnrolDate.ToString("dd MMM yyyy")</td>
+                <td>
+                    <span class="badge @(enrolment.Status == Entities.Domain.EnrolmentStatus.Active
+                                                  ? "bg-success"
+                                                  : enrolment.Status == Entities.Domain.EnrolmentStatus.Withdrawn
+                                                  ? "bg-danger" : "bg-secondary")">
+                    @enrolment.Status
+                </span>
+            </td>
+            @if (User.IsInRole("Administrator"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@enrolment.Id"
+                           class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@enrolment.Id"
+                           class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

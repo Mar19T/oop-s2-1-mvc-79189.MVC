@@ -1,0 +1,56 @@
+﻿@model Entities.Domain.Assignment
+@{
+    ViewData["Title"] = "Results";
+}
+
+<h1>@Model.Title</h1>
+<p class="text-muted">@Model.Course?.Name — Max Score: @Model.MaxScore</p>
+<hr />
+
+@if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+{
+    <a asp-action="AddResult" asp-route-assignmentId="@Model.Id"
+       class="btn btn-success mb-3">+ Add Result</a>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Score</th>
+            <th>Percentage</th>
+            <th>Feedback</th>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in Model.Results)
+        {
+            var percentage = Model.MaxScore > 0
+            ? (result.Score * 100 / Model.MaxScore) : 0;
+            <tr>
+                <td>@result.StudentProfile?.Name</td>
+                <td>@result.Score / @Model.MaxScore</td>
+                <td>
+                    <span class="badge @(percentage >= 70 ? "bg-success" :
+                                                  percentage >= 50 ? "bg-warning" : "bg-danger")">
+                    @percentage%
+                </span>
+            </td>
+            <td>@result.Feedback</td>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+                {
+                    <td>
+                        <a asp-action="EditResult" asp-route-id="@result.Id"
+                           class="btn btn-sm btn-warning">Edit</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Gradebook</a>

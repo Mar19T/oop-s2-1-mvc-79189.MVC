@@ -1,0 +1,20 @@
+﻿@model Entities.Domain.AttendanceRecord
+@{
+    ViewData["Title"] = "Delete Attendance Record";
+}
+
+<h1>Delete Attendance Record</h1>
+<hr />
+
+<div class="alert alert-danger">
+    Are you sure you want to delete the attendance record for
+    <strong>@Model.CourseEnrolment?.StudentProfile?.Name</strong>
+    in <strong>@Model.CourseEnrolment?.Course?.Name</strong>
+    Week @Model.WeekNumber?
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Yes, Delete" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>

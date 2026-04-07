@@ -1,0 +1,51 @@
+﻿@model Entities.Domain.AssignmentResult
+@{
+    ViewData["Title"] = "Edit Result";
+}
+
+<h1>Edit Result</h1>
+<h5 class="text-muted">@ViewBag.AssignmentTitle — Max Score: @ViewBag.MaxScore</h5>
+<hr />
+
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="EditResult">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="AssignmentId" />
+            <input type="hidden" asp-for="StudentProfileId" />
+
+            <div class="form-group mb-3">
+                <label class="control-label">Student</label>
+                <input type="text" class="form-control"
+                       value="@ViewBag.StudentName" disabled />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Score" class="control-label"></label>
+                <input asp-for="Score" class="form-control" type="number"
+                       min="0" max="@ViewBag.MaxScore" />
+                <small class="text-muted">Max: @ViewBag.MaxScore</small>
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Feedback" class="control-label"></label>
+                <textarea asp-for="Feedback" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Feedback" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Results" asp-route-assignmentId="@Model.AssignmentId"
+                   class="btn btn-secondary ms-2">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Entities.Domain.Exam>
+@{
+    ViewData["Title"] = "Exams";
+}
+
+<h1>Exams</h1>
+
+@if (User.IsInRole("Administrator"))
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">+ Add Exam</a>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Course</th>
+            <th>Date</th>
+            <th>Max Score</th>
+            <th>Results</th>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+            {
+                <th>Released</th>
+            }
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exam in Model)
+        {
+            <tr>
+                <td>@exam.Title</td>
+                <td>@exam.Course?.Name</td>
+                <td>@exam.Date.ToString("dd MMM yyyy")</td>
+                <td>@exam.MaxScore</td>
+                <td>@exam.Results.Count submitted</td>
+                @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+                {
+                    <td>
+                        <span class="badge @(exam.ResultsReleased ? "bg-success" : "bg-warning")">
+                            @(exam.ResultsReleased ? "Released" : "Provisional")
+                        </span>
+                    </td>
+                }
+                <td>
+                    <a asp-action="Results" asp-route-examId="@exam.Id"
+                       class="btn btn-sm btn-info">Results</a>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+                    {
+                        <a asp-action="AddResult" asp-route-examId="@exam.Id"
+                           class="btn btn-sm btn-success">Add Result</a>
+                    }
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@exam.Id"
+                           class="btn btn-sm btn-warning">Edit</a>
+                        @if (!exam.ResultsReleased)
+                        {
+                            <a asp-action="ReleaseResults" asp-route-id="@exam.Id"
+                               class="btn btn-sm btn-primary"
+                               onclick="return confirm('Release results for @exam.Title?')">
+                                Release
+                            </a>
+                        }
+                        <a asp-action="Delete" asp-route-id="@exam.Id"
+                           class="btn btn-sm btn-danger">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

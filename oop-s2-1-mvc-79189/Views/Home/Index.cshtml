@@ -1,8 +1,123 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mt-5">
+    <h1 class="display-4">Welcome to VGC College</h1>
+    <p class="lead text-muted">Acme Global College — Multi-Branch Student Management System</p>
+    <hr />
 </div>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <div class="row mt-4">
+        @if (User.IsInRole("Administrator"))
+        {
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-danger">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Branches</h5>
+                        <a asp-controller="Branches" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">Manage</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Courses</h5>
+                        <a asp-controller="Courses" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">Manage</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Students</h5>
+                        <a asp-controller="StudentProfiles" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">Manage</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Exams</h5>
+                        <a asp-controller="Exams" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">Manage</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (User.IsInRole("Faculty"))
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">My Students</h5>
+                        <a asp-controller="Enrolments" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Gradebook</h5>
+                        <a asp-controller="Gradebook" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Exams</h5>
+                        <a asp-controller="Exams" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (User.IsInRole("Student"))
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">My Courses</h5>
+                        <a asp-controller="Enrolments" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">My Grades</h5>
+                        <a asp-controller="Gradebook" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">My Exams</h5>
+                        <a asp-controller="Exams" asp-action="Index"
+                           class="btn btn-light btn-sm mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="text-center mt-4">
+        <a asp-area="Identity" asp-page="/Account/Login"
+           class="btn btn-primary btn-lg">Login to Continue</a>
+    </div>
+}

@@ -1,0 +1,56 @@
+﻿@model Entities.Domain.FacultyProfile
+@{
+    ViewData["Title"] = "Faculty Details";
+}
+
+<h1>@Model.Name</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+    <dt class="col-sm-3">Phone</dt>
+    <dd class="col-sm-9">@Model.Phone</dd>
+</dl>
+
+<h4 class="mt-4">Assigned Courses</h4>
+@foreach (var ca in Model.CourseAssignments)
+{
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>@ca.Course?.Name</strong>
+        </div>
+        <div class="card-body">
+            <h6>Enrolled Students</h6>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Student Number</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var enrolment in ca.Course?.Enrolments ?? [])
+                    {
+                        <tr>
+                            <td>@enrolment.StudentProfile?.Name</td>
+                            <td>@enrolment.StudentProfile?.StudentNumber</td>
+                            <td>
+                                <span class="badge @(enrolment.Status == Entities.Domain.EnrolmentStatus.Active ? "bg-success" : "bg-secondary")">
+                                    @enrolment.Status
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole("Administrator"))
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+}
+<a asp-action="Index" class="btn btn-secondary ms-2">Back</a>

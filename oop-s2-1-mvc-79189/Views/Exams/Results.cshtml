@@ -1,0 +1,60 @@
+﻿@model Entities.Domain.Exam
+@{
+    ViewData["Title"] = "Exam Results";
+}
+
+<h1>@Model.Title</h1>
+<p class="text-muted">@Model.Course?.Name — Max Score: @Model.MaxScore</p>
+
+@if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+{
+    <span class="badge @(Model.ResultsReleased ? "bg-success" : "bg-warning") mb-3">
+        @(Model.ResultsReleased ? "Results Released" : "Provisional — Not visible to students")
+    </span>
+}
+<hr />
+
+@if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+{
+    <a asp-action="AddResult" asp-route-examId="@Model.Id"
+       class="btn btn-success mb-3">+ Add Result</a>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Score</th>
+            <th>Grade</th>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in Model.Results)
+        {
+            <tr>
+                <td>@result.StudentProfile?.Name</td>
+                <td>@result.Score / @Model.MaxScore</td>
+                <td>
+                    <span class="badge @(result.Grade == "A" ? "bg-success" :
+                                                  result.Grade == "B" ? "bg-primary" :
+                                                  result.Grade == "C" ? "bg-warning" : "bg-danger")">
+                    @result.Grade
+                </span>
+            </td>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+                {
+                    <td>
+                        <a asp-action="EditResult" asp-route-id="@result.Id"
+                           class="btn btn-sm btn-warning">Edit</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Exams</a>

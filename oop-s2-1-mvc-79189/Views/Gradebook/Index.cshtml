@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Entities.Domain.Assignment>
+@{
+    ViewData["Title"] = "Gradebook";
+}
+
+<h1>Gradebook</h1>
+
+@if (User.IsInRole("Administrator"))
+{
+    <a asp-action="CreateAssignment" class="btn btn-primary mb-3">+ Add Assignment</a>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Course</th>
+            <th>Due Date</th>
+            <th>Max Score</th>
+            <th>Results</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var assignment in Model)
+        {
+            <tr>
+                <td>@assignment.Title</td>
+                <td>@assignment.Course?.Name</td>
+                <td>@assignment.DueDate.ToString("dd MMM yyyy")</td>
+                <td>@assignment.MaxScore</td>
+                <td>@assignment.Results.Count submitted</td>
+                <td>
+                    <a asp-action="Results" asp-route-assignmentId="@assignment.Id"
+                       class="btn btn-sm btn-info">Results</a>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Faculty"))
+                    {
+                        <a asp-action="AddResult" asp-route-assignmentId="@assignment.Id"
+                           class="btn btn-sm btn-success">Add Result</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
